@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -66,6 +66,8 @@ class CRM_Admin_Form_ParticipantStatusType extends CRM_Admin_Form {
     $this->add('text', 'weight', ts('Order'), $attributes['weight'], TRUE);
 
     $this->addSelect('visibility_id', array('label' => ts('Visibility'), 'required' => TRUE));
+
+    $this->assign('id', $this->_id);
   }
 
   /**

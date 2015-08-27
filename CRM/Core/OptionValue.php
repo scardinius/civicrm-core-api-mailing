@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -291,7 +291,7 @@ class CRM_Core_OptionValue {
         $nameTitle = array(
           'payment_instrument' => array(
             'name' => 'payment_instrument',
-            'title' => ts('Payment Instrument'),
+            'title' => ts('Payment Method'),
             'headerPattern' => '/^payment|(p(ayment\s)?instrument)$/i',
           ),
         );

@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -1356,7 +1356,7 @@ class CRM_Contact_Import_Parser_Contact extends CRM_Contact_Import_Parser {
 
           case 'is_deceased':
             if (CRM_Utils_String::strtoboolstr($value) === FALSE) {
-              self::addToErrorMsg(ts('Is Deceased'), $errorMessage);
+              self::addToErrorMsg(ts('Deceased'), $errorMessage);
             }
             break;
 

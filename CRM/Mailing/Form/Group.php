@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -483,8 +483,6 @@ class CRM_Mailing_Form_Group extends CRM_Contact_Form_Task {
     CRM_Mailing_BAO_Mailing::getRecipients(
       $mailing->id,
       $mailing->id,
-      NULL,
-      NULL,
       TRUE,
       $dedupeEmail
     );

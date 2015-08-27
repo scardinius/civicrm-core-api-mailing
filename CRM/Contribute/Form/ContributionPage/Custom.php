@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -89,11 +89,6 @@ class CRM_Contribute_Form_ContributionPage_Custom extends CRM_Contribute_Form_Co
    */
   public function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-
-    if ($this->_id) {
-      $title = CRM_Core_DAO::getFieldValue('CRM_Contribute_DAO_ContributionPage', $this->_id, 'title');
-      CRM_Utils_System::setTitle(ts('Include Profiles') . " ($title)");
-    }
 
     $ufJoinParams = array(
       'module' => 'CiviContribute',

@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -356,39 +356,11 @@ return array(
     'group_name' => 'CiviCRM Preferences',
     'group' => 'core',
     'name' => 'versionAlert',
-    'type' => 'Integer',
-    'quick_form_type' => 'Element',
-    'html_type' => 'select',
-    'option_values' => array(
-      ts('Disabled'),
-      ts('Display In Page Footer'),
-      ts('Display As Popup Alert'),
-      ts('Page Footer + Popup Alert'),
-    ),
+    'type' => 'Boolean',
+    'quick_form_type' => 'YesNo',
     'default' => 1,
     'add' => '4.3',
     'title' => 'New Version Alerts',
-    'is_domain' => 1,
-    'is_contact' => 0,
-    'description' => "",
-    'help_text' => NULL,
-  ),
-  'securityUpdateAlert' => array(
-    'group_name' => 'CiviCRM Preferences',
-    'group' => 'core',
-    'name' => 'securityUpdateAlert',
-    'type' => 'Integer',
-    'quick_form_type' => 'Element',
-    'html_type' => 'select',
-    'option_values' => array(
-      ts('Disabled'),
-      ts('Display In Page Footer'),
-      ts('Display As Popup Alert'),
-      ts('Page Footer + Popup Alert'),
-    ),
-    'default' => 3,
-    'add' => '4.6',
-    'title' => 'Security Update Alerts',
     'is_domain' => 1,
     'is_contact' => 0,
     'description' => "",
@@ -432,10 +404,10 @@ return array(
     'quick_form_type' => 'YesNo',
     'default' => 1,
     'add' => '4.4',
-    'title' => 'Security Audits',
+    'title' => 'Status Alerts',
     'is_domain' => 1,
     'is_contact' => 0,
-    'description' => "If enabled, CiviCRM will automatically run checks for significant mis-configurations such as ineffective file protections.",
+    'description' => "If enabled, CiviCRM will display pop-up notifications (no more than once per day) for security and misconfiguration issues identified in the system check.",
     'help_text' => NULL,
   ),
   'doNotAttachPDFReceipt' => array(
@@ -747,6 +719,26 @@ return array(
     'is_contact' => 0,
     'description' => 'When enabled, "empowered by CiviCRM" is displayed at the bottom of public forms.',
     'help_text' => NULL,
+  ),
+  'logging' => array(
+    'add' => '4.7',
+    'prefetch' => 1,
+    'help_text' => NULL,
+    'is_domain' => 1,
+    'is_contact' => 0,
+    'group_name' => 'CiviCRM Preferences',
+    'group' => 'core',
+    'name' => 'logging',
+    'type' => 'Boolean',
+    'quick_form_type' => 'YesNo',
+    'html_type' => '',
+    'default' => '0',
+    'title' => 'Logging',
+    'description' => 'If enabled, all actions will be logged with a complete record of changes.',
+    'validate_callback' => 'CRM_Logging_Schema::checkLoggingSupport',
+    'on_change' => array(
+      'CRM_Logging_Schema::onToggle',
+    ),
   ),
   'wpLoadPhp' => array(
     'group_name' => 'CiviCRM Preferences',

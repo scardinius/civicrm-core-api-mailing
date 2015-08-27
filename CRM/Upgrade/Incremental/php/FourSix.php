@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6.alpha1                                         |
+ | CiviCRM version 4.7.alpha1                                         |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -174,6 +174,23 @@ class CRM_Upgrade_Incremental_php_FourSix extends CRM_Upgrade_Incremental_Base {
       $query = "ALTER TABLE log_civicrm_case MODIFY `case_type_id` int(10) unsigned DEFAULT NULL COMMENT 'FK to civicrm_case_type.id';";
       CRM_Core_DAO::executeQuery($query);
     }
+    return TRUE;
+  }
+
+  /**
+   * Queue Task Callback for CRM-16846
+   *
+   * Run a sql file without resetting locale to that version
+   */
+  public static function task_4_6_x_runOnlySql(CRM_Queue_TaskContext $ctx, $rev) {
+    $upgrade = new CRM_Upgrade_Form();
+    $smarty = CRM_Core_Smarty::singleton();
+    $smarty->assign('domainID', CRM_Core_Config::domainID());
+
+    $fileName = dirname(__DIR__) . "/sql/$rev.mysql.tpl";
+
+    $upgrade->source($smarty->fetch($fileName), TRUE);
+
     return TRUE;
   }
 

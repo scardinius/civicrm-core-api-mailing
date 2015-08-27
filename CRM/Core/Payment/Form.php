@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -29,14 +29,14 @@
  *
  * @package CRM
  * @copyright CiviCRM LLC (c) 2004-2015
- * $Id$
- *
  */
 class CRM_Core_Payment_Form {
 
 
   /**
-   * Add payment fields depending on payment processor. The payment processor can implement the following functions to override the built in fields.
+   * Add payment fields depending on payment processor.
+   *
+   * The payment processor can implement the following functions to override the built in fields.
    *
    *  - getPaymentFormFields()
    *  - getPaymentFormFieldsMetadata()
@@ -180,11 +180,31 @@ class CRM_Core_Payment_Form {
   }
 
   /**
+   * Add the payment fields to the template.
+   *
+   * Generally this is the payment processor fields & the billing fields required
+   * for the payment processor. However, this has been complicated by adding
+   * pay later billing fields into this mix
+   *
+   * We now have the situation where the required fields cannot be set as required
+   * on the form level if they are required for the payment processor, as another
+   * processor might be selected and the validation will then be incorrect.
+   *
+   * However, if they are required for pay later we DO set them on the form level,
+   * presumably assuming they will be required whatever happens.
+   *
+   * As a side-note this seems to re-enforce the argument for making pay later
+   * operate as a payment processor rather than as a 'special thing on its own'.
+   *
    * @param CRM_Core_Form $form
+   *   Form that the payment fields are to be added to.
    * @param bool $useRequired
+   *   Effectively this means are the fields required for pay-later - see above.
    * @param array $paymentFields
+   *   Fields that are to be shown on the payment form.
    */
   protected static function addCommonFields(&$form, $useRequired, $paymentFields) {
+    $requiredPaymentFields = array();
     foreach ($paymentFields as $name => $field) {
       if (!empty($field['cc_field'])) {
         if ($field['htmlType'] == 'chainSelect') {
@@ -199,7 +219,13 @@ class CRM_Core_Payment_Form {
           );
         }
       }
+      // CRM-17071 We seem to be tying ourselves in knots around the addition
+      // of requiring billing fields for pay-later. Here we 'tell' the form the
+      // field is required if it is not otherwise marked as required and is
+      // required for the billing block.
+      $requiredPaymentFields[$field['name']] = !$useRequired ? $field['is_required'] : FALSE;
     }
+    $form->assign('requiredPaymentFields', $requiredPaymentFields);
   }
 
   /**
@@ -299,26 +325,6 @@ class CRM_Core_Payment_Form {
   }
 
   /**
-   * Billing mode button is basically synonymous with paypal express  - this is probably a good example of 'odds & sods' code we
-   * need to find a way for the payment processor to assign. A tricky aspect is that the payment processor may need to set the order
-   *
-   * @param $form
-   */
-  protected static function addPaypalExpressCode(&$form) {
-    if (empty($form->isBackOffice)) {
-      if (in_array(CRM_Utils_Array::value('billing_mode', $form->_paymentProcessor), array(2, 3))) {
-        $form->_expressButtonName = $form->getButtonName('upload', 'express');
-        $form->assign('expressButtonName', $form->_expressButtonName);
-        $form->add('image',
-          $form->_expressButtonName,
-          $form->_paymentProcessor['url_button'],
-          array('class' => 'crm-form-submit')
-        );
-      }
-    }
-  }
-
-  /**
    * Validate the payment instrument values before passing it to the payment processor
    * We want this to be overrideable by the payment processor, and default to using
    * this object's validCreditCard for credit cards (implemented as the default in the Payment class).
@@ -347,6 +353,30 @@ class CRM_Core_Payment_Form {
       $creditCardTypes[$key] = $name;
     }
     return $creditCardTypes;
+  }
+
+  /**
+   * Set default values for the form.
+   *
+   * @param CRM_Core_Form $form
+   * @param int $contactID
+   */
+  public static function setDefaultValues(&$form, $contactID) {
+    $billingDefaults = $form->getProfileDefaults('Billing', $contactID);
+    $form->_defaults = array_merge($form->_defaults, $billingDefaults);
+
+    // set default country & state from config if no country set
+    // note the effect of this is to set the billing country to default to the site default
+    // country if the person has an address but no country (for anonymous country is set above)
+    // this could have implications if the billing profile is filled but hidden.
+    // this behaviour has been in place for a while but the use of js to hide things has increased
+    if (empty($form->_defaults["billing_country_id-{$form->_bltID}"])) {
+      $form->_defaults["billing_country_id-{$form->_bltID}"] = CRM_Core_Config::singleton()->defaultContactCountry;
+    }
+    if (empty($form->_defaults["billing_state_province_id-{$form->_bltID}"])) {
+      $form->_defaults["billing_state_province_id-{$form->_bltID}"] = CRM_Core_Config::singleton()
+        ->defaultContactStateProvince;
+    }
   }
 
   /**

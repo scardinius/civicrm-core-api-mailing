@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -133,8 +133,6 @@ class CRM_Campaign_Form_Petition_Signature extends CRM_Core_Form {
   protected $_sendEmailMode;
 
   protected $_image_URL;
-
-  protected $_defaults = NULL;
 
   /**
    */

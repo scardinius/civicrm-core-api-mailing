@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -42,7 +42,6 @@ class CRM_Admin_Form_Setting_Debugging extends CRM_Admin_Form_Setting {
   protected $_settings = array(
     'debug_enabled' => CRM_Core_BAO_Setting::DEVELOPER_PREFERENCES_NAME,
     'backtrace' => CRM_Core_BAO_Setting::DEVELOPER_PREFERENCES_NAME,
-    'fatalErrorTemplate' => CRM_Core_BAO_Setting::DEVELOPER_PREFERENCES_NAME,
     'fatalErrorHandler' => CRM_Core_BAO_Setting::DEVELOPER_PREFERENCES_NAME,
   );
 

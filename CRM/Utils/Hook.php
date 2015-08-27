@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -381,25 +381,6 @@ abstract class CRM_Utils_Hook {
       self::$_nullObject, self::$_nullObject, self::$_nullObject, self::$_nullObject,
       'civicrm_postProcess'
     );
-  }
-
-  /**
-   * This hook is invoked during all CiviCRM form validation. An array of errors
-   * detected is returned. Else we assume validation succeeded.
-   *
-   * @param string $formName
-   *   The name of the form.
-   * @param array &$fields the POST parameters as filtered by QF
-   * @param array &$files the FILES parameters as sent in by POST
-   * @param array &$form the form object
-   *
-   * @return mixed
-   *   formRule hooks return a boolean or
-   *                           an array of error messages which display a QF Error
-   */
-  public static function validate($formName, &$fields, &$files, &$form) {
-    return self::singleton()
-      ->invoke(4, $formName, $fields, $files, $form, self::$_nullObject, self::$_nullObject, 'civicrm_validate');
   }
 
   /**
@@ -1955,6 +1936,24 @@ abstract class CRM_Utils_Hook {
     return self::singleton()->invoke(2, $results, $items,
       self::$_nullObject, self::$_nullObject, self::$_nullObject, self::$_nullObject,
       'civicrm_batchItems'
+    );
+  }
+
+  /**
+   * This hook is called when core resources are being loaded
+   *
+   * @see CRM_Core_Resources::coreResourceList
+   *
+   * @param array $list
+   * @param string $region
+   */
+  public static function coreResourceList(&$list, $region) {
+    // First allow the cms integration to add to the list
+    CRM_Core_Config::singleton()->userSystem->appendCoreResources($list);
+
+    self::singleton()->invoke(2, $list, $region,
+      self::$_nullObject, self::$_nullObject, self::$_nullObject, self::$_nullObject,
+      'civicrm_coreResourceList'
     );
   }
 

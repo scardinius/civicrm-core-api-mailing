@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -80,21 +80,6 @@ return array(
     'is_domain' => 1,
     'is_contact' => 0,
     'description' => "Set this value to Yes if you want to display a backtrace listing when a fatal error is encountered. This feature should NOT be enabled for production sites",
-    'prefetch' => 1,
-  ),
-  'fatalErrorTemplate' => array(
-    'group_name' => 'Developer Preferences',
-    'group' => 'developer',
-    'name' => 'fatalErrorTemplate',
-    'type' => 'String',
-    'quick_form_type' => 'Element',
-    'html_type' => 'text',
-    'default' => 'CRM/common/fatal.tpl',
-    'add' => '4.3',
-    'title' => 'Fatal Error Template',
-    'is_domain' => 1,
-    'is_contact' => 0,
-    'description' => "Enter the path and filename for a custom Smarty template if you want to define your own screen for displaying fatal errors.",
     'prefetch' => 1,
   ),
   'fatalErrorHandler' => array(

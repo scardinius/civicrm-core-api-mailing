@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -52,13 +52,6 @@ class CRM_Case_Form_Activity extends CRM_Activity_Form_Activity {
    * @var int
    */
   public $_caseType;
-
-  /**
-   * The default values of an activity.
-   *
-   * @var array
-   */
-  public $_defaults = array();
 
   /**
    * The array of releted contact info.

@@ -1,6 +1,6 @@
 {*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -56,7 +56,7 @@
     {if $paidEvent}
         <table class="form-layout-compressed">
             <tr class="crm-event-additionalparticipant-form-block-amount">
-                <td class="label nowrap">{$event.fee_label} <span class="marker">*</span></td>
+                <td class="label nowrap">{$event.fee_label} <span class="crm-marker">*</span></td>
                 <td>&nbsp;</td>
                 <td>{$form.amount.html}</td>
             </tr>

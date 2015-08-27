@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -142,7 +142,13 @@ class CRM_Contact_Form_Edit_Address {
         $name = 'name';
       }
 
-      $form->addField("address[$blockId][$name]", array('entity' => 'address'));
+      $params = array('entity' => 'address');
+
+      if ($name == 'postal_code_suffix') {
+        $params['label'] = ts('Suffix');
+      }
+
+      $form->addField("address[$blockId][$name]", $params);
     }
 
     $entityId = NULL;

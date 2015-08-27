@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -2130,6 +2130,9 @@ ORDER BY civicrm_email.is_primary DESC";
         }
         elseif ($fieldName == 'email') {
           $data['email'][$loc]['email'] = $value;
+          if (empty($contactID)) {
+            $data['email'][$loc]['is_primary'] = 1;
+          }
         }
         elseif ($fieldName == 'im') {
           if (isset($params[$key . '-provider_id'])) {

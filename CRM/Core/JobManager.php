@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -85,6 +85,13 @@ class CRM_Core_JobManager {
       }
     }
     $this->logEntry('Finishing scheduled jobs execution.');
+
+    // Set last cron date for the status check
+    $statusPref = array(
+      'name' => 'checkLastCron',
+      'check_info' => gmdate('U'),
+    );
+    CRM_Core_BAO_StatusPreference::create($statusPref);
   }
 
   /**

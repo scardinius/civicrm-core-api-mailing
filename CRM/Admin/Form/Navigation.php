@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -43,11 +43,6 @@ class CRM_Admin_Form_Navigation extends CRM_Admin_Form {
    * The parent id of the navigation menu.
    */
   protected $_currentParentID = NULL;
-
-  /**
-   * Default values.
-   */
-  protected $_defaults = array();
 
   /**
    * Build the form object.

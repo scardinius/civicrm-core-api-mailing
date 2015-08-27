@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -60,6 +60,13 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
    * @var string
    */
   protected $_title = NULL;
+
+  /**
+   * The default values for the form.
+   *
+   * @var array
+   */
+  public $_defaults = array();
 
   /**
    * The options passed into this form
@@ -337,6 +344,19 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
   }
 
   /**
+   * Add an element for inputting a month+day (partial date).
+   *
+   * @param string $name
+   * @param string $label
+   * @return HTML_QuickForm_Element
+   */
+  public function addMonthDay($name, $label) {
+    return $this->add('date', $name, $label,
+      CRM_Core_SelectValues::date(NULL, 'M d')
+    );
+  }
+
+  /**
    * called before buildForm. Any pre-processing that
    * needs to be done for buildForm should be done here
    *
@@ -445,16 +465,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
 
     $this->validateChainSelectFields();
 
-    $hookErrors = CRM_Utils_Hook::validate(
-      get_class($this),
-      $this->_submitValues,
-      $this->_submitFiles,
-      $this
-    );
-
-    if (!is_array($hookErrors)) {
-      $hookErrors = array();
-    }
+    $hookErrors = array();
 
     CRM_Utils_Hook::validateForm(
       get_class($this),
@@ -727,6 +738,39 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       CRM_Financial_Form_Payment::addCreditCardJs();
     }
     $this->assign('paymentProcessorID', $this->_paymentProcessorID);
+  }
+
+  /**
+   * Handle pre approval for processors.
+   *
+   * This fits with the flow where a pre-approval is done and then confirmed in the next stage when confirm is hit.
+   *
+   * This function is shared between contribution & event forms & this is their common class.
+   *
+   * However, this should be seen as an in-progress refactor, the end goal being to also align the
+   * backoffice forms that action payments.
+   *
+   * @param array $params
+   */
+  protected function handlePreApproval(&$params) {
+    try {
+      $payment = Civi\Payment\System::singleton()->getByProcessor($this->_paymentProcessor);
+      $params['component'] = 'contribute';
+      $result = $payment->doPreApproval($params);
+      if (empty($result)) {
+        // This could happen, for example, when paypal looks at the button value & decides it is not paypal express.
+        return;
+      }
+    }
+    catch (\Civi\Payment\Exception\PaymentProcessorException $e) {
+      CRM_Core_Error::displaySessionError($e->getMessage());
+      CRM_Utils_System::redirect($params['cancelURL']);
+    }
+
+    $this->set('pre_approval_parameters', $result['pre_approval_parameters']);
+    if (!empty($result['redirect_url'])) {
+      CRM_Utils_System::redirect($result['redirect_url']);
+    }
   }
 
   /**
@@ -1204,7 +1248,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       $options = $props['options'];
     }
     else {
-      $info = civicrm_api3($props['entity'], 'getoptions', $props + array('check_permissions' => 1));
+      $info = civicrm_api3($props['entity'], 'getoptions', $props);
       $options = $info['values'];
     }
     if (!array_key_exists('placeholder', $props)) {
@@ -1447,7 +1491,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
    * @param bool $default
    *   //CRM-15427.
    */
-  public function addProfileSelector($name, $label, $allowCoreTypes, $allowSubTypes, $entities, $default = FALSE) {
+  public function addProfileSelector($name, $label, $allowCoreTypes, $allowSubTypes, $entities, $default = FALSE, $usedFor = NULL) {
     // Output widget
     // FIXME: Instead of adhoc serialization, use a single json_encode()
     CRM_UF_Page_ProfileEditor::registerProfileScripts();
@@ -1459,6 +1503,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       'data-entities' => json_encode($entities),
       //CRM-15427
       'data-default' => $default,
+      'data-usedfor' => json_encode($usedFor),
     ));
   }
 
@@ -1869,7 +1914,7 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
    *
    * @return NULL|int
    */
-  public function getContactID() {
+  protected function setContactID() {
     $tempID = CRM_Utils_Request::retrieve('cid', 'Positive', $this);
     if (isset($this->_params) && isset($this->_params['select_contact_id'])) {
       $tempID = $this->_params['select_contact_id'];
@@ -1886,12 +1931,14 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       // from that page
       // we don't really need to set it when $tempID is set because the params have that stored
       $this->set('cid', 0);
+      CRM_Core_Resources::singleton()->addVars('coreForm', array('contact_id' => (int) $tempID));
       return (int) $tempID;
     }
 
     $userID = $this->getLoggedInUserContactID();
 
     if (!is_null($tempID) && $tempID === $userID) {
+      CRM_Core_Resources::singleton()->addVars('coreForm', array('contact_id' => (int) $tempID));
       return (int) $userID;
     }
 
@@ -1901,15 +1948,24 @@ class CRM_Core_Form extends HTML_QuickForm_Page {
       //check for anonymous user.
       $validUser = CRM_Contact_BAO_Contact_Utils::validChecksum($tempID, $userChecksum);
       if ($validUser) {
+        CRM_Core_Resources::singleton()->addVars('coreForm', array('contact_id' => (int) $tempID));
+        CRM_Core_Resources::singleton()->addVars('coreForm', array('checksum' => (int) $tempID));
         return $tempID;
       }
     }
     // check if user has permission, CRM-12062
     elseif ($tempID && CRM_Contact_BAO_Contact_Permission::allow($tempID)) {
+      CRM_Core_Resources::singleton()->addVars('coreForm', array('contact_id' => (int) $tempID));
       return $tempID;
     }
-
+    if (is_numeric($userID)) {
+      CRM_Core_Resources::singleton()->addVars('coreForm', array('contact_id' => (int) $userID));
+    }
     return is_numeric($userID) ? $userID : NULL;
+  }
+
+  public function getContactID() {
+    return $this->setContactID();
   }
 
   /**

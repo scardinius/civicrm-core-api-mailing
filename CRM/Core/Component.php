@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -111,6 +111,23 @@ class CRM_Core_Component {
 
     return $_cache;
   }
+
+  /**
+   * @return array
+   *   Array(string $name => int $id).
+   */
+  public static function &getComponentIDs() {
+    $componentIDs = array();
+
+    $cr = new CRM_Core_DAO_Component();
+    $cr->find(FALSE);
+    while ($cr->fetch()) {
+      $componentIDs[$cr->name] = $cr->id;
+    }
+
+    return $componentIDs;
+  }
+
 
   /**
    * @param bool $force

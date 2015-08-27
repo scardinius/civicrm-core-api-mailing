@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -459,7 +459,7 @@ class CRM_Core_Block {
       $value['url'] = CRM_Utils_System::url($short['path'], $short['query'], FALSE);
     }
     $value['title'] = $short['title'];
-    $value['ref'] = $short['ref'];
+    $value['ref'] = isset($short['ref']) ? $short['ref'] : '';
     if (!empty($short['shortCuts'])) {
       foreach ($short['shortCuts'] as $shortCut) {
         $value['shortCuts'][] = self::setShortcutValues($shortCut);

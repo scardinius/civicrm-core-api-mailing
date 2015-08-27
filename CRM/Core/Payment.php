@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -81,6 +81,25 @@ abstract class CRM_Core_Payment {
     RECURRING_PAYMENT_END = 'END';
 
   protected $_paymentProcessor;
+
+  /**
+   * Base url of the calling form.
+   *
+   * This is used for processors that need to return the browser back to the CiviCRM site.
+   *
+   * @var string
+   */
+  protected $baseReturnUrl;
+
+  /**
+   * Set Base return URL.
+   *
+   * @param string $url
+   *   Url of site to return browser to.
+   */
+  public function setBaseReturnUrl($url) {
+    $this->baseReturnUrl = $url;
+  }
 
   /**
    * Opportunity for the payment processor to override the entire form build.
@@ -200,6 +219,15 @@ abstract class CRM_Core_Payment {
    */
   protected function supportsFutureRecurStartDate() {
     return FALSE;
+  }
+
+  /**
+   * Does this processor support cancelling recurring contributions through code.
+   *
+   * @return bool
+   */
+  protected function supportsCancelRecurring() {
+    return method_exists(CRM_Utils_System::getClassName($this), 'cancelSubscription');
   }
 
   /**
@@ -530,9 +558,14 @@ abstract class CRM_Core_Payment {
   /**
    * Get base url dependent on component.
    *
-   * @return string|void
+   * (or preferably set it using the setter function).
+   *
+   * @return string
    */
   protected function getBaseReturnUrl() {
+    if ($this->baseReturnUrl) {
+      return $this->baseReturnUrl;
+    }
     if ($this->_component == 'event') {
       $baseURL = 'civicrm/event/register';
     }
@@ -696,12 +729,7 @@ abstract class CRM_Core_Payment {
       }
     }
     else {
-      if ($this->_paymentProcessor['billing_mode'] == 1) {
-        $result = $this->doDirectPayment($params, $component);
-      }
-      else {
-        $result = $this->doExpressCheckout($params);
-      }
+      $result = $this->doDirectPayment($params, $component);
       if (is_array($result) && !isset($result['payment_status_id'])) {
         if (!empty($params['is_recur'])) {
           // See comment block.
@@ -716,6 +744,24 @@ abstract class CRM_Core_Payment {
       throw new PaymentProcessorException(CRM_Core_Error::getMessages($result));
     }
     return $result;
+  }
+
+  /**
+   * Query payment processor for details about a transaction.
+   *
+   * @param array $params
+   *   Array of parameters containing one of:
+   *   - trxn_id Id of an individual transaction.
+   *   - processor_id Id of a recurring contribution series as stored in the civicrm_contribution_recur table.
+   *
+   * @return array
+   *   Extra parameters retrieved.
+   *   Any parameters retrievable through this should be documented in the function comments at
+   *   CRM_Core_Payment::doQuery. Currently:
+   *   - fee_amount Amount of fee paid
+   */
+  public function doQuery($params) {
+    return array();
   }
 
   /**
@@ -876,6 +922,8 @@ abstract class CRM_Core_Payment {
 
   /**
    * Check whether a method is present ( & supported ) by the payment processor object.
+   *
+   * @deprecated - use $paymentProcessor->supports(array('cancelRecurring');
    *
    * @param string $method
    *   Method to check for.

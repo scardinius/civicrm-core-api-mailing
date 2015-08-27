@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -591,6 +591,7 @@ function civicrm_api3_mailing_send_test($params) {
         ->where('c.is_opt_out = 0')
         ->where('c.do_not_email = 0')
         ->where('c.is_deceased = 0')
+        ->where('c.is_deleted = 0')
         ->groupBy('e.id')
         ->orderBy(array('e.is_bulkmail DESC', 'e.is_primary DESC'))
         ->toSQL();

@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -553,8 +553,8 @@ class CRM_Core_SelectValues {
       '{contribution.fee_amount}' => ts('Fee Amount'),
       '{contribution.net_amount}' => ts('Net Amount'),
       '{contribution.non_deductible_amount}' => ts('Non-deductible Amount'),
-      '{contribution.receive_date}' => ts('Contribution Receive Date'),
-      '{contribution.payment_instrument}' => ts('Payment Instrument'),
+      '{contribution.receive_date}' => ts('Contribution Date Received'),
+      '{contribution.payment_instrument}' => ts('Payment Method'),
       '{contribution.trxn_id}' => ts('Transaction ID'),
       '{contribution.invoice_id}' => ts('Invoice ID'),
       '{contribution.currency}' => ts('Currency'),
@@ -873,6 +873,9 @@ class CRM_Core_SelectValues {
    */
   public static function getJobFrequency() {
     return array(
+      '1stOfQtr' => ts('1st day of every quarter'),
+      '1stOfMth' => ts('1st day of every month'),
+      'Mondays' => ts('Monday of every week'),
       'Daily' => ts('Daily'),
       'Hourly' => ts('Hourly'),
       'Always' => ts('Every time cron job is run'),

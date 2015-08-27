@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -373,14 +373,14 @@ class CRM_Activity_Import_Parser_Activity extends CRM_Activity_Import_Parser {
         if (!empty($params['target_contact_id']) &&
           $params['target_contact_id'] != $targetContactId
         ) {
-          array_unshift($values, 'Mismatch of External identifier :' . $params['external_identifier'] . ' and Contact Id:' . $params['target_contact_id']);
+          array_unshift($values, 'Mismatch of External ID:' . $params['external_identifier'] . ' and Contact Id:' . $params['target_contact_id']);
           return CRM_Import_Parser::ERROR;
         }
         elseif ($targetContactId) {
           $params['target_contact_id'] = $targetContactId;
         }
         else {
-          array_unshift($values, 'No Matching Contact for External identifier :' . $params['external_identifier']);
+          array_unshift($values, 'No Matching Contact for External ID:' . $params['external_identifier']);
           return CRM_Import_Parser::ERROR;
         }
       }

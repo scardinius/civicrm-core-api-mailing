@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -40,14 +40,7 @@
 class CRM_Contact_Form_DedupeFind extends CRM_Admin_Form {
 
   /**
-   * Defined defaults.
-   */
-  public $_defaults;
-
-  /**
    * Pre processing.
-   *
-   * @return void
    */
   public function preProcess() {
     $this->rgid = CRM_Utils_Request::retrieve('rgid', 'Positive', $this, FALSE, 0);

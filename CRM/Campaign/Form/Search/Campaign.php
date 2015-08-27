@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -111,6 +111,14 @@ class CRM_Campaign_Form_Search_Campaign extends CRM_Core_Form {
     );
     $this->set('campaignStatus', $campaignStatus);
     $this->assign('campaignStatus', json_encode($campaignStatus));
+
+    //active campaigns
+    $this->addElement('select', 'is_active', ts('Is Actief?'), array(
+      '' => ts('- select -'),
+      '0' => ts('Yes'),
+      '1' => ts('No'),
+        )
+    );
 
     //build the array of all search params.
     $this->_searchParams = array();

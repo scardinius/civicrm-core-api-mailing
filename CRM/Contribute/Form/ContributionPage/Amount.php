@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -189,8 +189,6 @@ SELECT id
    */
   public function setDefaultValues() {
     $defaults = parent::setDefaultValues();
-    $title = CRM_Core_DAO::getFieldValue('CRM_Contribute_DAO_ContributionPage', $this->_id, 'title');
-    CRM_Utils_System::setTitle(ts('Contribution Amounts') . " ($title)");
 
     if (empty($defaults['pay_later_text'])) {
       $defaults['pay_later_text'] = ts('I will send payment by check');

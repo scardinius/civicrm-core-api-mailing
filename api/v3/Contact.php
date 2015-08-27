@@ -1,7 +1,7 @@
 <?php
 /*
   +--------------------------------------------------------------------+
-  | CiviCRM version 4.6                                                |
+  | CiviCRM version 4.7                                                |
   +--------------------------------------------------------------------+
   | Copyright CiviCRM LLC (c) 2004-2015                                |
   +--------------------------------------------------------------------+
@@ -131,6 +131,7 @@ function _civicrm_api3_contact_create_spec(&$params) {
   );
   $params['prefix_id']['api.aliases'] = array('individual_prefix', 'individual_prefix_id');
   $params['suffix_id']['api.aliases'] = array('individual_suffix', 'individual_suffix_id');
+  $params['gender_id']['api.aliases'] = array('gender');
 }
 
 /**
@@ -852,7 +853,7 @@ function civicrm_api3_contact_getquick($params) {
 
   //CRM-5954
   $query = "
-        SELECT DISTINCT(id), data, sort_name {$selectAliases}
+        SELECT DISTINCT(id), data, sort_name {$selectAliases}, exactFirst
         FROM   (
             ( SELECT 0 as exactFirst, cc.id as id, CONCAT_WS( ' :: ', {$actualSelectElements} ) as data {$select}
             FROM   civicrm_contact cc {$from}

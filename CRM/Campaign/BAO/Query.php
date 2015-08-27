@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -354,7 +354,7 @@ civicrm_activity_assignment.record_type_id = $assigneeID ) ";
     $form->add('text', 'street_unit', ts('Street Unit'), $attributes['street_unit']);
     $form->add('text', 'street_address', ts('Street Address'), $attributes['street_address']);
     $form->add('text', 'city', ts('City'), $attributes['city']);
-    $form->add('text', 'postal_code', ts('Zip / Postal Code'), $attributes['postal_code']);
+    $form->add('text', 'postal_code', ts('Postal Code'), $attributes['postal_code']);
 
     //@todo FIXME - using the CRM_Core_DAO::VALUE_SEPARATOR creates invalid html - if you can find the form
     // this is loaded onto then replace with something like '__' & test
@@ -602,13 +602,6 @@ INNER JOIN  civicrm_custom_group grp on fld.custom_group_id = grp.id
       foreach ($campaign as $campId) {
         $campaignIds[$campId] = $campId;
         $campaignTitles[$campId] = $allCampaigns[$campId];
-      }
-      if (count($campaignIds) > 1) {
-        $op = 'IN';
-        $campaignIds = '(' . implode(',', $campaignIds) . ')';
-      }
-      else {
-        $campaignIds = reset($campaignIds);
       }
     }
     else {

@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -26,51 +26,63 @@
  */
 
 /**
- * A PHP cron script to mail the result set of specified report to the
- * recipients mentioned for that report
+ * This api exposes CiviCRM MembershipLog records.
+ *
+ * @package CiviCRM_APIv3
  */
-class CiviReportMail {
-  /**
-   */
-  public function __construct() {
-    $this->initialize();
 
-    CRM_Utils_System::authenticateScript(TRUE);
-
-    //log the execution of script
-    CRM_Core_Error::debug_log_message('CiviReportMail.php');
-  }
-
-  public function initialize() {
-    require_once '../civicrm.config.php';
-    require_once 'CRM/Core/Config.php';
-
-    $config = CRM_Core_Config::singleton();
-  }
-
-  public function run() {
-    $lock = Civi\Core\Container::singleton()->get('lockManager')->acquire('worker.report.CiviReportMail');
-
-    if ($lock->isAcquired()) {
-      // try to unset any time limits
-      if (!ini_get('safe_mode')) {
-        set_time_limit(0);
-      }
-
-      // if there are named sets of settings, use them - otherwise use the default (null)
-      require_once 'CRM/Report/Utils/Report.php';
-      $result = CRM_Report_Utils_Report::processReport();
-      echo $result['messages'];
-    }
-    else {
-      throw new Exception('Could not acquire lock, another CiviReportMail process is running');
-    }
-
-    $lock->release();
-  }
-
+/**
+ * API to Create or update a MembershipLog.
+ *
+ * @param array $params
+ *   Values of MembershipLog.
+ *
+ * @return array
+ *   API result array.
+ */
+function civicrm_api3_membership_log_create($params) {
+  return _civicrm_api3_basic_create(_civicrm_api3_get_BAO(__FUNCTION__), $params);
 }
 
-session_start();
-$obj = new CiviReportMail();
-$obj->run();
+/**
+ * Adjust Metadata for Create action.
+ *
+ * The metadata is used for setting defaults, documentation & validation.
+ *
+ * @param array $params
+ *   Array of parameters determined by getfields.
+ */
+function _civicrm_api3_membership_log_create_spec(&$params) {
+  $params['membership_id']['api.required'] = TRUE;
+}
+
+/**
+ * Get a Membership Log.
+ *
+ * This api is used for finding an existing membership log.
+ *
+ * @param array $params
+ *   An associative array of name/value property values of civicrm_membership_log.
+ * {getfields MembershipLog_get}
+ *
+ * @return array
+ *   API result array
+ */
+function civicrm_api3_membership_log_get($params) {
+  return _civicrm_api3_basic_get(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+}
+
+/**
+ * Deletes an existing membership log.
+ *
+ * This API is used for deleting a membership log
+ * Required parameters : id of a membership log
+ *
+ * @param array $params
+ *
+ * @return array
+ *   API result array
+ */
+function civicrm_api3_membership_log_delete($params) {
+  return _civicrm_api3_basic_delete(_civicrm_api3_get_BAO(__FUNCTION__), $params);
+}

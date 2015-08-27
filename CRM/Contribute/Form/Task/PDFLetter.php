@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -125,7 +125,7 @@ class CRM_Contribute_Form_Task_PDFLetter extends CRM_Contribute_Form_Task {
       'contribution_recur_id' => ts('Contact and Recurring'),
       'financial_type_id' => ts('Contact and Financial Type'),
       'campaign_id' => ts('Contact and Campaign'),
-      'payment_instrument_id' => 'Contact and Payment Instrument',
+      'payment_instrument_id' => ts('Contact and Payment Method'),
     );
     $this->addElement('select', 'group_by', ts('Group contributions by'), $options, array(), "<br/>", FALSE);
     // this was going to be free-text but I opted for radio options in case there was a script injection risk

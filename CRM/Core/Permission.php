@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -591,7 +591,7 @@ class CRM_Core_Permission {
     $permissions = self::getCorePermissions($descriptions);
 
     if (self::isMultisiteEnabled()) {
-      $permissions['administer Multiple Organizations'] = $prefix . ts('administer Multiple Organizations');
+      $permissions['administer Multiple Organizations'] = array($prefix . ts('administer Multiple Organizations'));
     }
 
     if (!$all) {
@@ -769,6 +769,10 @@ class CRM_Core_Permission {
       ),
       'merge duplicate contacts' => array(
         $prefix . ts('merge duplicate contacts'),
+        ts('Delete Contacts must also be granted in order for this to work.'),
+      ),
+      'force merge duplicate contacts' => array(
+        $prefix . ts('force merge duplicate contacts'),
         ts('Delete Contacts must also be granted in order for this to work.'),
       ),
       'view debug output' => array(

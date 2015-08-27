@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -67,7 +67,7 @@ class CRM_Import_DataSource_CSV extends CRM_Import_DataSource {
 
     $config = CRM_Core_Config::singleton();
 
-    $uploadFileSize = CRM_Core_Config_Defaults::formatUnitSize($config->maxFileSize . 'm', TRUE);
+    $uploadFileSize = CRM_Utils_Number::formatUnitSize($config->maxFileSize . 'm', TRUE);
     $uploadSize = round(($uploadFileSize / (1024 * 1024)), 2);
     $form->assign('uploadSize', $uploadSize);
     $form->add('File', 'uploadFile', ts('Import Data File'), 'size=30 maxlength=255', TRUE);

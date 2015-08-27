@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -104,7 +104,9 @@ class CRM_Core_Payment_ProcessorForm {
   }
 
   /**
-   * @param $form
+   * Build the payment processor form.
+   *
+   * @param CRM_Core_Form $form
    */
   public static function buildQuickform(&$form) {
     //@todo document why this addHidden is here

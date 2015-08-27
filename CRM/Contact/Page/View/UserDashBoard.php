@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -146,7 +146,8 @@ class CRM_Contact_Page_View_UserDashBoard extends CRM_Core_Page {
       }
     }
 
-    if (!empty($this->_userOptions['Permissioned Orgs'])) {
+    // CRM-16512 - Hide related contact table if user lacks permission to view self
+    if (!empty($this->_userOptions['Permissioned Orgs']) && CRM_Core_Permission::check('view my contact')) {
       $dashboardElements[] = array(
         'class' => 'crm-dashboard-permissionedOrgs',
         'templatePath' => 'CRM/Contact/Page/View/RelationshipSelector.tpl',

@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -71,7 +71,7 @@ class CRM_Mailing_BAO_MailingJob extends CRM_Mailing_DAO_MailingJob {
     $mailing = new CRM_Mailing_BAO_Mailing();
     $mailing->id = $params['mailing_id'];
     if ($mailing->id && $mailing->find(TRUE)) {
-      $mailing->getRecipients($job->id, $params['mailing_id'], NULL, NULL, TRUE, $mailing->dedupe_email);
+      $mailing->getRecipients($job->id, $params['mailing_id'], TRUE, $mailing->dedupe_email);
       return $job;
     }
     else {
@@ -184,9 +184,8 @@ class CRM_Mailing_BAO_MailingJob extends CRM_Mailing_DAO_MailingJob {
       }
 
       // Get the mailer
-      // make it a persistent connection, CRM-9349
       if ($mode === NULL) {
-        $mailer = $config->getMailer(TRUE);
+        $mailer = \Civi\Core\Container::singleton()->get('pear_mail');
       }
       elseif ($mode == 'sms') {
         $mailer = CRM_SMS_Provider::singleton(array('mailing_id' => $job->mailing_id));
@@ -669,7 +668,7 @@ VALUES (%1, %2, %3, %4, %5, %6, %7)
         $replyToEmail = $mailing->replyto_email;
       }
 
-      $message = &$mailing->compose(
+      $message = $mailing->compose(
         $this->id, $field['id'], $field['hash'],
         $field['contact_id'], $field['email'],
         $recipient, FALSE, $details[0][$contactID], $attachments,

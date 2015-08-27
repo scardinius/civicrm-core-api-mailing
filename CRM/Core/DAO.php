@@ -1,7 +1,7 @@
 <?php
 /*
   +--------------------------------------------------------------------+
-  | CiviCRM version 4.6                                                |
+  | CiviCRM version 4.7                                                |
   +--------------------------------------------------------------------+
   | Copyright CiviCRM LLC (c) 2004-2015                                |
   +--------------------------------------------------------------------+
@@ -975,6 +975,19 @@ FROM   civicrm_domain
       throw new Exception("Unable to find a " . get_called_class() . " with id {$id}.");
     }
     return $object;
+  }
+
+  /**
+   * Returns all results as array-encoded records.
+   *
+   * @return array
+   */
+  public function fetchAll() {
+    $result = array();
+    while ($this->fetch()) {
+      $result[] = $this->toArray();
+    }
+    return $result;
   }
 
   /**

@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -35,8 +35,6 @@ class CRM_Admin_Form_WordReplacements extends CRM_Core_Form {
   protected $_numStrings = 10;
 
   protected $_stringName = NULL;
-
-  protected $_defaults = NULL;
 
   public $unsavedChangesWarn = TRUE;
 

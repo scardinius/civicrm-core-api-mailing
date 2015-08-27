@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -739,6 +739,13 @@ class CRM_Utils_System_Drupal6 extends CRM_Utils_System_DrupalBase {
       $timezone = parent::getTimeZoneString();
     }
     return $timezone;
+  }
+
+  /**
+   * @inheritDoc
+   */
+  public function setHttpHeader($name, $value) {
+    drupal_set_header("$name: $value");
   }
 
 }

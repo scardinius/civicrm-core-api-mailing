@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -219,8 +219,7 @@ class CRM_Core_Page {
 
     $config = CRM_Core_Config::singleton();
 
-    // Version check and intermittent alert to admins
-    CRM_Utils_VersionCheck::singleton()->versionAlert();
+    // Intermittent alert to admins
     CRM_Utils_Check::singleton()->showPeriodicAlerts();
 
     if ($this->useLivePageJS &&

@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -229,23 +229,6 @@ class CRM_Core_Config_Variables extends CRM_Core_Config_Defaults {
   public $monetaryThousandSeparator = ',';
 
   /**
-   * Default encoding of strings returned by gettext
-   * @var string
-   */
-  public $gettextCodeset = 'utf-8';
-
-  /**
-   * Default name for gettext domain.
-   * @var string
-   */
-  public $gettextDomain = 'civicrm';
-
-  /**
-   * Default location of gettext resource files.
-   */
-  public $gettextResourceDir = './l10n/';
-
-  /**
    * Default user framework. This basically makes Drupal 7 the default
    */
   public $userFramework = 'Drupal';
@@ -271,11 +254,6 @@ class CRM_Core_Config_Variables extends CRM_Core_Config_Defaults {
   public $userFrameworkFrontend = FALSE;
   public $userFrameworkLogging = FALSE;
 
-  /**
-   * The handle for import file size
-   * @var int
-   */
-  public $maxImportFileSize = 1048576;
   public $maxFileSize = 2;
 
   /**
@@ -321,14 +299,6 @@ class CRM_Core_Config_Variables extends CRM_Core_Config_Defaults {
   public $geocodeMethod = '';
 
   /**
-   *
-   *
-   * @var boolean
-   */
-  public $mapGeoCoding = 1;
-
-
-  /**
    * Whether database-level logging should be performed
    * @var boolean
    */
@@ -364,13 +334,6 @@ class CRM_Core_Config_Variables extends CRM_Core_Config_Defaults {
   public $enableSSL = FALSE;
 
   /**
-   * Error template to use for fatal errors
-   *
-   * @var string
-   */
-  public $fatalErrorTemplate = 'CRM/common/fatal.tpl';
-
-  /**
    * Fatal error handler
    *
    * @var string
@@ -390,27 +353,6 @@ class CRM_Core_Config_Variables extends CRM_Core_Config_Defaults {
    * @var string
    */
   public $fieldSeparator = ',';
-
-  /**
-   * Max location blocks in address
-   *
-   * @var integer
-   */
-  public $maxLocationBlocks = 2;
-
-  /**
-   * The font path where captcha fonts are stored
-   *
-   * @var string
-   */
-  public $captchaFontPath = '/usr/X11R6/lib/X11/fonts/';
-
-  /**
-   * The font to use for captcha
-   *
-   * @var string
-   */
-  public $captchaFont = 'HelveticaBold.ttf';
 
   /**
    * Some search settings
@@ -438,14 +380,6 @@ class CRM_Core_Config_Variables extends CRM_Core_Config_Defaults {
    */
   public $includeAlphabeticalPager = 1;
   public $includeOrderByClause = 1;
-  public $oldInputStyle = 1;
-
-  /**
-   * Should we disable key generation for forms
-   *
-   * @var boolean
-   */
-  public $formKeyDisable = FALSE;
 
   /**
    * determine whether the call is from cms or civicrm

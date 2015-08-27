@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -67,19 +67,6 @@ class CRM_Core_BAO_ConfigSetting {
    */
   public static function add(&$params) {
     self::fixParams($params);
-
-    // also set a template url so js files can use this
-    // CRM-6194
-    $params['civiRelativeURL'] = CRM_Utils_System::url('CIVI_BASE_TEMPLATE');
-    $params['civiRelativeURL']
-      = str_replace(
-        'CIVI_BASE_TEMPLATE',
-        '',
-        $params['civiRelativeURL']
-      );
-
-    // also add the version number for use by template / js etc
-    $params['civiVersion'] = CRM_Utils_System::version();
 
     $domain = new CRM_Core_DAO_Domain();
     $domain->id = CRM_Core_Config::domainID();
@@ -347,10 +334,12 @@ class CRM_Core_BAO_ConfigSetting {
       if (!empty($enableComponents)) {
         $defaults['enableComponents'] = $enableComponents;
 
-        $components = CRM_Core_Component::getComponents();
+        // Lookup component IDs. Note: Do *not* instantiate components.
+        // Classloading may not be fully setup yet.
+        $components = CRM_Core_Component::getComponentIDs();
         $enabledComponentIDs = array();
         foreach ($defaults['enableComponents'] as $name) {
-          $enabledComponentIDs[] = $components[$name]->componentID;
+          $enabledComponentIDs[] = $components[$name];
         }
         $defaults['enableComponentIDs'] = $enabledComponentIDs;
       }

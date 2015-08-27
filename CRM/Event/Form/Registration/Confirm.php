@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -581,6 +581,10 @@ class CRM_Event_Form_Registration_Confirm extends CRM_Event_Form_Registration {
       if ($this->_values['event']['is_monetary'] && !($this->_allowWaitlist || $this->_requireApproval)) {
         if (is_array($this->_paymentProcessor)) {
           $payment = $this->_paymentProcessor['object'];
+        }
+        if (!empty($this->_paymentProcessor) &&  $this->_paymentProcessor['object']->supports('preApproval')) {
+          $preApprovalParams = $this->_paymentProcessor['object']->getPreApprovalDetails($this->get('pre_approval_parameters'));
+          $value = array_merge($value, $preApprovalParams);
         }
         $result = NULL;
 

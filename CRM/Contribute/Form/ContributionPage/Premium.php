@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -43,8 +43,6 @@ class CRM_Contribute_Form_ContributionPage_Premium extends CRM_Contribute_Form_C
   public function setDefaultValues() {
     $defaults = array();
     if (isset($this->_id)) {
-      $title = CRM_Core_DAO::getFieldValue('CRM_Contribute_DAO_ContributionPage', $this->_id, 'title');
-      CRM_Utils_System::setTitle(ts('Premiums') . " ($title)");
       $dao = new CRM_Contribute_DAO_Premium();
       $dao->entity_table = 'civicrm_contribution_page';
       $dao->entity_id = $this->_id;

@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -671,7 +671,7 @@ class WebTest_Event_AddPricesetTest extends CiviSeleniumTestCase {
         'From' => $displayName,
         'Financial Type' => 'Event Fee',
         'Contribution Status' => 'Completed',
-        'Paid By' => 'Check',
+        'Payment Method' => 'Check',
         'Check Number' => '1044',
         'Received Into' => 'Deposit Bank Account',
       )

@@ -23,4 +23,5 @@
  | see the CiviCRM license FAQ at http://civicrm.org/licensing        |
  +--------------------------------------------------------------------+
 *}
-{* Auction DashBoard (launch page) *}
+
+<div id="civicrm-getting-started">{$gettingStarted}</div>

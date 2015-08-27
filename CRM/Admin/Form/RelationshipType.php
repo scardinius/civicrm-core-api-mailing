@@ -1,7 +1,7 @@
 <?php
 /*
  +--------------------------------------------------------------------+
- | CiviCRM version 4.6                                                |
+ | CiviCRM version 4.7                                                |
  +--------------------------------------------------------------------+
  | Copyright CiviCRM LLC (c) 2004-2015                                |
  +--------------------------------------------------------------------+
@@ -101,6 +101,9 @@ class CRM_Admin_Form_RelationshipType extends CRM_Admin_Form {
     if ($this->_action & CRM_Core_Action::VIEW) {
       $this->freeze();
     }
+
+    $this->assign('relationship_type_id', $this->_id);
+
   }
 
   /**
